@@ -24,7 +24,7 @@ def evaluate_normalized_mean_error(predictions, groundtruth, log, extra_faces):
   for i in range(num_images):
     detected_points = predictions[i]
     ground_truth_points = groundtruth[i]
-    if num_points == 68:
+    if num_points in (68, 70):
       interocular_distance = np.linalg.norm(ground_truth_points[:2, 36] - ground_truth_points[:2, 45])
       assert bool(ground_truth_points[2,36]) and bool(ground_truth_points[2,45])
     elif num_points == 51 or num_points == 49:

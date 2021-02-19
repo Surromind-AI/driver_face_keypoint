@@ -1,33 +1,23 @@
 #!/usr/bin/env sh
-echo script name: $0
-echo $# arguments
-if [ "$#" -ne 2 ] ;then
-  echo "Input illegal number of parameters " $#
-  echo "Need 3 parameters for gpu devices and detector and sigma"
-  exit 1
-fi
-gpus=$1
+gpus=0,1
 model=itn_cpm
 epochs=50
 stages=3
-batch_size=8
+batch_size=32
 GPUS=2
 sigma=4
 height=128
 width=128
-dataset_name=300W_$2
+dataset_name=Testworks
 
 CUDA_VISIBLE_DEVICES=${gpus} python san_main.py \
-    --train_list ./cache_data/lists/300W/Original/300w.train.$2 \
-    --eval_lists ./cache_data/lists/300W/Original/300w.test.common.$2 \
-        	 ./cache_data/lists/300W/Original/300w.test.challenge.$2 \
-        	 ./cache_data/lists/300W/Original/300w.test.full.$2 \
-    --cycle_a_lists ./snapshots/CLUSTER-300W_$2-3/cluster-00-03.lst \
-    --cycle_b_lists ./snapshots/CLUSTER-300W_$2-3/cluster-02-03.lst \
-    --num_pts 68 --pre_crop_expand 0.2 \
+    --train_list /data/keypoints/converted/train.lst \
+    --eval_lists /data/keypoints/converted/valid.lst /data/keypoints/converted/test.lst \
+    --num_pts 70 --pre_crop_expand 0.2 \
     --arch ${model} --cpm_stage ${stages} \
+    --cycle_model_path /workspace/checkpoints \
     --save_path ./snapshots/SAN_${dataset_name}_${model}_${stages}_${epochs}_sigma${sigma}_${height}x${width}x8 \
-    --learning_rate 0.00005 --decay 0.0005 --batch_size ${batch_size} --workers 20 --gpu_ids 0,1 \
+    --learning_rate 0.0001 --decay 0.0005 --batch_size ${batch_size} --workers 16 --gpu_ids 0,1 \
     --epochs ${epochs} --schedule 30 35 40 45 --gammas 0.5 0.5 0.5 0.5 \
     --dataset_name ${dataset_name} \
     --scale_min 1 --scale_max 1 --scale_eval 1 --eval_batch ${batch_size} \
