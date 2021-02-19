@@ -3,7 +3,6 @@ data
 */*.pyc
 */*/*.pyc
 .*.swp
-*.pth.tar
 *.png
 test_utils/Generate_*.sh
 ./cache_data/*.lst
