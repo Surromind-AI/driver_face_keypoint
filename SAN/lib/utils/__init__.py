@@ -7,5 +7,6 @@ from .pts_utils      import generate_label_map_gaussian
 from .pts_utils      import generate_label_map_laplacian
 from .time_utils     import convert_size2str
 from .flop_benchmark import get_model_infos, count_parameters_in_MB
+from .mtcnn_detector import detect_face_mtcnn
 
 from .stn_utils      import crop2affine

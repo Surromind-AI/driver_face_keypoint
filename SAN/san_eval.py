@@ -17,6 +17,7 @@ import models
 import datasets
 from visualization import draw_image_by_points
 from san_vision import transforms
+import utils
 from utils import time_string, time_for_file, get_model_infos
 
 def evaluate(args):
@@ -30,7 +31,6 @@ def evaluate(args):
   snapshot = Path(args.model)
   assert snapshot.exists(), 'The model path {:} does not exist'
   print ('The face bounding box is {:}'.format(args.face))
-  assert len(args.face) == 4, 'Invalid face input : {:}'.format(args.face)
   if args.cpu: snapshot = torch.load(snapshot, map_location='cpu')
   else       : snapshot = torch.load(snapshot)
 
@@ -50,6 +50,15 @@ def evaluate(args):
   dataset.reset(param.num_pts)
 
   print ('[{:}] prepare the input data'.format(time_string()))
+  
+  if len(args.face) != 4:
+    print("Invalid args.face given! Using MT-CNN face detector instead.")
+    try:
+      args.face = utils.detect_face_mtcnn(args.image)
+    except utils.mtcnn_detector.BBoxNotFound:
+      print("MT-CNN detector failed! Using default bbox instead.")
+      args.face = [153.08, 462., 607.78, 1040.42]
+
   [image, _, _, _, _, _, cropped_size], meta = dataset.prepare_input(args.image, args.face)
   print ('[{:}] prepare the input data done'.format(time_string()))
   print ('Net : \n{:}'.format(net))
