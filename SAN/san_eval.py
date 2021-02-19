@@ -7,7 +7,7 @@ from __future__ import division
 
 import os, sys, time, random, argparse, PIL
 from pathlib import Path
-from PIL import ImageFile
+from PIL import ImageFile, Image
 ImageFile.LOAD_TRUNCATED_IMAGES = True # please use Pillow 4.0.0 or it may fail for some images
 from os import path as osp
 import numbers, numpy as np
@@ -57,6 +57,9 @@ def evaluate(args):
   with torch.no_grad():
     if args.cpu: inputs = image.unsqueeze(0)
     else       : inputs = image.unsqueeze(0).cuda()
+    gan_output = (net.netG_A(inputs) + net.netG_B(inputs))/2
+    gan_output = (gan_output * 0.5 + 0.5).squeeze(0).cpu().permute(1, 2, 0).numpy()
+    Image.fromarray((gan_output * 255).astype(np.uint8)).save(args.save_path.replace(".jpg", ".gan.jpg"))
     batch_heatmaps, batch_locs, batch_scos, _ = net(inputs)
     #print ('input-shape : {:}'.format(inputs.shape))
     flops, params = get_model_infos(net, inputs.shape, None)
