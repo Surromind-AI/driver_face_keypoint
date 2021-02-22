@@ -30,7 +30,6 @@ def evaluate(args):
   print ('The model is {:}'.format(args.model))
   snapshot = Path(args.model)
   assert snapshot.exists(), 'The model path {:} does not exist'
-  print ('The face bounding box is {:}'.format(args.face))
   if args.cpu: snapshot = torch.load(snapshot, map_location='cpu')
   else       : snapshot = torch.load(snapshot)
 
@@ -51,15 +50,14 @@ def evaluate(args):
 
   print ('[{:}] prepare the input data'.format(time_string()))
   
-  if len(args.face) != 4:
-    print("Invalid args.face given! Using MT-CNN face detector instead.")
-    try:
-      args.face = utils.detect_face_mtcnn(args.image)
-    except utils.mtcnn_detector.BBoxNotFound:
-      print("MT-CNN detector failed! Using default bbox instead.")
-      args.face = [153.08, 462., 607.78, 1040.42]
+  print("Using MT-CNN face detector.")
+  try:
+    face = utils.detect_face_mtcnn(args.image)
+  except utils.mtcnn_detector.BBoxNotFound:
+    print("MT-CNN detector failed! Using default bbox instead.")
+    face = [153.08, 462., 607.78, 1040.42]
 
-  [image, _, _, _, _, _, cropped_size], meta = dataset.prepare_input(args.image, args.face)
+  [image, _, _, _, _, _, cropped_size], meta = dataset.prepare_input(args.image, face)
   print ('[{:}] prepare the input data done'.format(time_string()))
   print ('Net : \n{:}'.format(net))
   # network forward
@@ -101,7 +99,6 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='Evaluate a single image by the trained model', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   parser.add_argument('--image',            type=str,   help='The evaluation image path.')
   parser.add_argument('--model',            type=str,   help='The snapshot to the saved detector.')
-  parser.add_argument('--face',  nargs='+', type=float, help='The coordinate [x1,y1,x2,y2] of a face')
   parser.add_argument('--save_path',        type=str,   help='The path to save the visualization results')
   parser.add_argument('--cpu',     action='store_true', help='Use CPU or not.')
   args = parser.parse_args()
