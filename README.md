@@ -5,11 +5,11 @@
 MIT License
 
 ## Installation
-설치 및 데이터셋 준비는 [INSTALL.md](./docs/INSTALL.md)를 참조하세요.
+* 설치 및 데이터셋 준비는 [INSTALL.md](./docs/INSTALL.md)를 참조하세요.
+* [학습된 모델 파일 다운로드](https://drive.google.com/file/d/1MA5EMKPv8Fh9yBsyT5BMU7nKS0T1bHUD/view?usp=sharing)하여 SAN 폴더에 두기
 
 ## Getting Started
-* [학습된 모델 파일 다운로드](https://drive.google.com/file/d/1MA5EMKPv8Fh9yBsyT5BMU7nKS0T1bHUD/view?usp=sharing)하여 SAN 폴더에 두기
-[GETTING_STARTED.md](./docs/GETTING_STARTED.md)을 참조하세요. 
+* [GETTING_STARTED.md](./docs/GETTING_STARTED.md)을 참조하세요. 
 
 ## Citation
 이 프로젝트는 [SAN](https://github.com/D-X-Y/landmark-detection/tree/master/SAN)을 기반으로 개발되었습니다.
