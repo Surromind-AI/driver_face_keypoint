@@ -8,6 +8,7 @@ MIT License
 설치 및 데이터셋 준비는 [INSTALL.md](./docs/INSTALL.md)를 참조하세요.
 
 ## Getting Started
+* [학습된 모델 파일 다운로드](https://drive.google.com/file/d/1MA5EMKPv8Fh9yBsyT5BMU7nKS0T1bHUD/view?usp=sharing)하여 SAN 폴더에 두기
 [GETTING_STARTED.md](./docs/GETTING_STARTED.md)을 참조하세요. 
 
 ## Citation
